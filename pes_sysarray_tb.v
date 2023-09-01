@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module systolic_tb();
+module pes_sysarray_tb();
 
     // Parameters
     parameter ARRAY_SIZE = 8;
@@ -22,7 +22,7 @@ module systolic_tb();
     wire signed [(ARRAY_SIZE*(DATA_WIDTH+DATA_WIDTH+5))-1:0] mul_outcome;
 
     // Instantiate the systolic array module
-    systolic #(
+    pes_sysarray #(
         .ARRAY_SIZE(ARRAY_SIZE),
         .SRAM_DATA_WIDTH(SRAM_DATA_WIDTH),
         .DATA_WIDTH(DATA_WIDTH)

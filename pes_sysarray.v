@@ -1,7 +1,7 @@
 //----for systolic array, we have 32x32 output, 32x32 weight buffer, 32x32
 //data buffer
 
-module systolic#(
+module pes_sysarray#(
 	parameter ARRAY_SIZE = 8,
 	parameter SRAM_DATA_WIDTH = 32,
 	parameter DATA_WIDTH = 8
