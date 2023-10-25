@@ -11,7 +11,7 @@ One of the advantages of systolic arrays is that they can achieve high throughpu
 ### Systolic Array Architecture for Matrix Multiplication
 A systolic array for matrix multiplication is a parallel processing architecture that uses a network of processing elements (PEs) to perform matrix multiplication in a pipelined fashion. The PEs are arranged in a regular grid and are connected to their nearest neighbors.
 
-![matmul](https://github.com/skudlur/pes_sysarray/blob/main/matmul.jpg)
+![matmul](https://github.com/skudlur/pes_sysarray/blob/main/matmul.gif)
 
 ### RTL
 ![rtl](https://github.com/skudlur/pes_sysarray/blob/main/rtl.jpeg)
