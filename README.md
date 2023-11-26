@@ -205,29 +205,19 @@ Go to the directory where pre_sta.conf is present and run ```sta pre_sta.conf```
 
 The  Hold slack has met the requirement 
 
-![image](https://github.com/yagnavivek/PES_ADD_SUB_32/assets/93475824/b1d41842-6a42-4435-a28c-a467c38d1569)
-
-The setup slack didnt meet the requirement
-
-![image](https://github.com/yagnavivek/PES_ADD_SUB_32/assets/93475824/8e6997d0-f43f-420f-aad1-c7ff4922a04e)
+![image](https://github.com/skudlur/pes_sysarray/assets/38615795/72065603-a1ff-405f-9abc-04248f9efd99)
 
 ##### STEP 1 : Decrease the Fanout - I did it to 4 
 
-To the config.json file, add the line ``` "MAX_FANOUT_CONSTRAINT": 4,``` after the clock period variable and again start interactive flow from start, prepare design and overwrite the run, run_synthesis and then run the sta part
+To the config.json file, add the line ```"MAX_FANOUT_CONSTRAINT": 4``` after the clock period variable and again start interactive flow from start, prepare design and overwrite the run, run_synthesis and then run the sta part
 
-![image](https://github.com/yagnavivek/PES_ADD_SUB_32/assets/93475824/60ffa3ed-7012-4d43-9de8-751ef58f1e6a)
-
-Setup slack after this step
-
-![image](https://github.com/yagnavivek/PES_ADD_SUB_32/assets/93475824/fcfbf50a-b9ec-45cd-9d69-ba32e41f8083)
+![image](https://github.com/skudlur/pes_sysarray/assets/38615795/80c3f45d-4f9d-49cd-8ff1-49e27bb3ccf0)
 
 ##### STEP 2 : Replace cells that infer larger delay
 
 In the above figure we can observe that cell instance **493** is causing the most delay. So we have to replace it with larger version of itself
 
 ```report_net -connections _020_``` - instances being driven by net _020_ as in fig
-
-![image](https://github.com/yagnavivek/PES_ADD_SUB_32/assets/93475824/45c077ce-62a9-496b-a5e7-af458b2be822)
 
 The instance that's causing highest delay is the cell **493**. So replace it as mentioned and check the result
 
@@ -236,67 +226,66 @@ replace_cell _493_ sky130_fd_sc_hd__or2b_4
 report_checks -path_delay min_max -fields {slew trans net cap input_pin}
 ```
 
-repeat this till the slack reaches almost positive value or a minimum positive value
-
-![image](https://github.com/yagnavivek/PES_ADD_SUB_32/assets/93475824/b98e9bb6-1771-481f-9f1f-48f3a563d612)
+Repeat this till the slack reaches almost positive value or a minimum positive value
 
 Once the slack is met, since the synthesized netlist has been manually modified, we have to write this out as a veriog file and replace it with the verilog file under ```results/synthesis``` with the same name so that the next steps consider this as the openlane synthesized netlist
 
 ```
-write_verilog /home/yagna/OpenLane/openlane/PES_ADD_SUB_32/runs/RUN1_INTER/results/synthesis/PES_ADD_SUB_32.v
+write_verilog /home/zer0/Documents/OpenLane/openlane/pes_sysarray/runs/RUN1_INT/results/synthesis/pes_sysarray.v
 ```
 
 Exit STA and continue with the main Openlane flow
 
 4. **Run Floorplan** - ```run_floorplan```
 
-![image](https://github.com/yagnavivek/PES_ADD_SUB_32/assets/93475824/42f1f2d3-684f-4afd-9db6-15d94912e05a)
+![image](https://github.com/skudlur/pes_sysarray/assets/38615795/35d64ab7-fd2a-4520-a49f-a5094a62a133)
 
 To view Floorplan in magic
 ```
-cd /home/yagna/OpenLane/openlane/PES_ADD_SUB_32/runs/RUN1_INTER/results/floorplan
-magic -T /home/yagna/.volare/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.nom.lef def read PES_ADD_SUB_32.def &
+cd /home/zer0/Documents/OpenLane/openlane/pes_sysarray/runs/RUN1_INT/results/floorplan
+magic -T /home/zer0/Documents/OpenLane/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.nom.lef def read pes_sysarray.def &
 ```
 
 change the paths accordingly for the runs and hostname
 
-
-![image](https://github.com/yagnavivek/PES_ADD_SUB_32/assets/93475824/5a556eb5-c9ff-4bbe-a3ac-68a41498b7af)
-
-![image](https://github.com/yagnavivek/PES_ADD_SUB_32/assets/93475824/8b8c4fbb-a4a5-4afd-bb1d-659836c17776)
+![image](https://github.com/skudlur/pes_sysarray/assets/38615795/8b8107a0-384f-4dca-8871-f64834b749ba)
 
 5. **Run Placement** - ```run_placement```
 
-![image](https://github.com/yagnavivek/PES_ADD_SUB_32/assets/93475824/f9182815-adae-4e06-a48e-371b7f979111)
+![image](https://github.com/skudlur/pes_sysarray/assets/38615795/373b0b5e-f17c-41be-a546-f79cd73c579b)
 
-A snipshot of placement 
+A snapshot of placement 
 
-![image](https://github.com/yagnavivek/PES_ADD_SUB_32/assets/93475824/a209e7ca-36fc-4c70-abaf-eebbd484ddfb)
+![image](https://github.com/skudlur/pes_sysarray/assets/38615795/4b8a7cfa-9674-407c-ad8f-0201b6fea56c)
 
 Execute the same magic command as in floorplan stage but this time in ```results/placement``` folder
 
 6. **Run CTS** - ```run_cts```
 
-![image](https://github.com/yagnavivek/PES_ADD_SUB_32/assets/93475824/0c1e3d0c-d37a-4a72-a6e5-e09c38c51d06)
+![image](https://github.com/skudlur/pes_sysarray/assets/38615795/d08c2a80-dfa3-402f-ab0c-4561d0200fdc)
 
 - The last 3 commands just shows that we can change the variable values in the interactive mode and continue with the flow
 - ```echo``` is to check and ```set``` is to assign
 
 POWER AREA AND TIMING REPORT
 
-![image](https://github.com/yagnavivek/PES_ADD_SUB_32/assets/93475824/b8a96868-ebff-4e8c-bd43-8e3a06b03774)
+![image](https://github.com/skudlur/pes_sysarray/assets/38615795/ad3d9f2b-b81e-43c0-b9f3-f6244ff7b6ae)
+
+![image](https://github.com/skudlur/pes_sysarray/assets/38615795/fac70109-45af-4ca0-ad40-4d0bdfea0313)
+
+![image](https://github.com/skudlur/pes_sysarray/assets/38615795/a2b93cc8-8790-440a-9209-58e37421ed45)
+
+![image](https://github.com/skudlur/pes_sysarray/assets/38615795/5f2e013d-4eba-4a10-9975-4680bdd6c2cb)
+
+![image](https://github.com/skudlur/pes_sysarray/assets/38615795/725b8b19-55f4-432f-a8da-a0c3c369520a)
 
 
 7. **Generate Power Distribution Network** - ```gen_pdn```
 
-![image](https://github.com/yagnavivek/PES_ADD_SUB_32/assets/93475824/910ba9ee-7ed5-4104-a6e5-6761bfa1c80f)
+![image](https://github.com/skudlur/pes_sysarray/assets/38615795/f175c601-81cb-476f-b306-6f7994256ec1)
 
 8. **Run Routing** - ```run_routing```
 
-![image](https://github.com/yagnavivek/PES_ADD_SUB_32/assets/93475824/0119e4b2-ad27-4ad2-a1ac-3e84eef4c3c1)
-
-![image](https://github.com/yagnavivek/PES_ADD_SUB_32/assets/93475824/60acc956-61e7-4bb5-85f7-4995dd499ead)
-
-
+![image](https://github.com/skudlur/pes_sysarray/assets/38615795/59de952a-3b2f-4ecb-8190-94b1c17d8e32)
 
 For further steps follow [interactive mode steps](https://openlane.readthedocs.io/en/latest/reference/interactive_mode.html)
